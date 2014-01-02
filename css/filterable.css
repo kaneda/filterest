@@ -1,0 +1,47 @@
+#filterest .nav {
+	display: inline-block;
+	float: right;
+	color: #888888;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 8px;
+}
+
+#filterTable {
+	width: 390px;
+	background: #fff;
+	border: 0px;
+	margin-top: 37px;
+    position: absolute;
+    right: -42px;
+	display: none;
+}
+
+.longRowList {
+	height: 200px;
+	overflow: auto;
+}
+
+#filterTable h2 {
+	font-size: 14px;
+}
+
+#filterTable .vertSep {
+	background: #fff;
+	width: 1px;
+	height: 100%;
+}
+
+.GridItems .Pin .filterKeyword {
+	display: none;
+}
+
+.filterKeyword {
+	z-index: 1;
+}
+
+.filterKeyword:hover {
+	cursor: pointer; cursor: hand
+}
+
