@@ -159,8 +159,7 @@ appAPI.ready(function($) {
 	});
 	
 	// Include the top filter menu
-	$('<li class="submenu" />')
-		.html(appAPI.resources.get('html/filter_template.html'))
+	$(appAPI.resources.get('html/filter_template.html'))
 		.prependTo('.rightHeaderContent');
 	
 	// Insert the correct words into the top filter menu
