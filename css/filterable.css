@@ -1,47 +1,80 @@
 #filterest .nav {
-	display: inline-block;
-	float: right;
-	color: #888888;
-	cursor: pointer;
-	font-size: 13px;
-	font-weight: bold;
-	padding: 8px;
+  display: block;
+  float: right;
+  color: #888888;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 8px;
+  position: absolute;
+  top: 33%;
+  left: 99.5%;
 }
 
 #filterTable {
-	width: 390px;
-	background: #fff;
-	border: 0px;
-	margin-top: 37px;
+  width: 390px;
+  background: #fff;
+  border: 1px solid gainsboro;
+  margin-top: 37px;
     position: absolute;
     right: -42px;
-	display: none;
+  display: none;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+
+#filterHeader {
+  text-align: center;
 }
 
 .longRowList {
-	height: 200px;
-	overflow: auto;
+  height: 200px;
+  max-width: 205px;
+  min-width: 205px;
+    overflow: auto;
+}
+
+.longRowList a::before {
+  content: "x ";
+  color: black;
+  white-space: nowrap;
 }
 
 #filterTable h2 {
-	font-size: 14px;
+  font-size: 14px;
 }
 
 #filterTable .vertSep {
-	background: #fff;
-	width: 1px;
-	height: 100%;
+  background: #fff;
+  width: 1px;
+  height: 100%;
 }
 
 .GridItems .Pin .filterKeyword {
-	display: none;
+  display: none;
 }
 
 .filterKeyword {
-	z-index: 1;
+  padding: 4px;
+  z-index: 1;
+}
+
+.unfilterKeyword {
+    padding: 4px;
+    z-index: 1;
+}
+
+.filterKeyword::before {
+  content: "x ";
+  color: black;
+}
+
+.unfilterKeyword::before {
+  content: "x ";
+  color: black;
 }
 
 .filterKeyword:hover {
-	cursor: pointer; cursor: hand
+  cursor: pointer; cursor: hand
 }
 
