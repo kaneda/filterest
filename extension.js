@@ -1,10 +1,14 @@
 appAPI.ready(function($) {
   // If we're on pinterest.com (IMPORTANT!)
-    if (!appAPI.matchPages("pinterest.com") && !appAPI.matchPages("www.pinterest.com")) return;
-    
+  if (!appAPI.isMatchPages("*.pinterest.com/*")) return;
+
     /*
      * Global Vars
      */
+     
+    // So that we can monitor for location changes in Pinterest
+    var initial_page = location.href;
+    
     // bad_words --> bad_words[some_word] = true;
     var bad_words = appAPI.db.get('filter_dict');
     if(bad_words === null || bad_words === undefined) {
@@ -35,6 +39,9 @@ appAPI.ready(function($) {
   *  Useful functions
   */
   function processDescription(target, override) {
+    // If we've already looked at this target skip it
+    if ( $(target).find('.filterKeyword').size() > 0) { return; }
+    
     var isEmpty = false;
     var bad_entry = false;
     
@@ -271,5 +278,16 @@ appAPI.ready(function($) {
       $(e.currentTarget).parent().css('z-index','1'); 
     });
   });
+
+  appAPI.setInterval(function() {
+    new_page = location.href;
+    if ( initial_page != new_page && document.getElementsByClassName('pinImg').length > 0 ) {
+      lastPin = $('.pinImg').last();
+      $(lastPin).on('load', function(e) {
+        initial_page = new_page;
+        refreshFilter(false);
+      });
+      }
+    }, 100);
 });
 
