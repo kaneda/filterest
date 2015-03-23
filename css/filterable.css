@@ -56,12 +56,12 @@
 
 .filterKeyword {
   padding: 4px;
-  z-index: 1;
+  z-index: 4;
 }
 
 .unfilterKeyword {
     padding: 4px;
-    z-index: 1;
+    z-index: 4;
 }
 
 .filterKeyword::before {
@@ -77,4 +77,3 @@
 .filterKeyword:hover {
   cursor: pointer; cursor: hand
 }
-

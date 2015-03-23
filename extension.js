@@ -34,26 +34,26 @@ appAPI.ready(function($) {
       "three":true, "four":true, "five":true, "six":true, "seven":true, "eight":true, "nine":true, "ten":true, "0":true,
       "1":true,"2":true,"3":true,"4":true,"5":true,"6":true,"7":true,"8":true,"9":true,"10":true, "you": true
   };
-  
+
   /*
   *  Useful functions
   */
   function processDescription(target, override) {
     // If we've already looked at this target skip it
-    if ( $(target).find('.filterKeyword').size() > 0) { return; }
-    
+    if (!override && $(target).find('.filterKeyword').size() > 0) { return; }
+
     var isEmpty = false;
     var bad_entry = false;
-    
+
     var imageDesc = $(target).find(".pinDescription").text().toLowerCase();
     if(!imageDesc) {
       imageDesc = $(target).find('.pinImg').attr('alt').toLowerCase();
-      
+
       if(!imageDesc) {
         isEmpty = true;
       }
     }
-    
+
     var altList = {};
     if(isEmpty) {
       if(skipBlanks) {
@@ -62,20 +62,20 @@ appAPI.ready(function($) {
     } else {
       var splitAlt = imageDesc.split(getDelimiter(imageDesc));
       bad_entry=false;
-      for(var j=0; j<splitAlt.length; j+=1) { 
+      for(var j=0; j<splitAlt.length; j+=1) {
         tmpWord = stripChars(splitAlt[j]);
         if(!tmpWord || tmpWord.length === 0) { continue; }
         if(good_words[tmpWord]) {
           bad_entry = false;
           break;
-        } else if(bad_words[tmpWord]) { 
+        } else if(bad_words[tmpWord]) {
           bad_entry=true;
         } else if(!cons[tmpWord]) {
           altList[tmpWord] = true;
         }
       }
     }
-    
+
     if(bad_entry) {
       $(target).css('display','none');
     } else {
@@ -89,16 +89,16 @@ appAPI.ready(function($) {
         }
       }
     }
-    }
-    
+  }
+
     // Currently refreshes every div:
     function refreshFilter(override) {
-    var imgArray = $('.GridItems .Pin');
-    for(var i=0; i<imgArray.length; i+=1 ) {
-      processDescription(imgArray[i], override);
+      var imgArray = $('.GridItems .Pin');
+      for(var i=0; i<imgArray.length; i+=1 ) {
+        processDescription(imgArray[i], override);
+      }
     }
-    }
-    
+
     // Generic sizeOf an associative array (dict)
     function sizeOf(object) {
     var size = 0;
@@ -109,56 +109,56 @@ appAPI.ready(function($) {
     }
     return size;
   }
-  
+
   // Delimiters can be ";" "," " " or "+"
   function getDelimiter(object) {
     var delimMap = {};
-    
+
     for(var i=0; i<object.length; i+=1) {
       currentChar = object.charAt(i);
       delimMap[currentChar] = delimMap.hasOwnProperty(currentChar) ? delimMap[currentChar] + 1 : 1;
     }
-    
+
     highest = 0;
     delim = ' ';
-    if(delimMap.hasOwnProperty('+')) { 
+    if(delimMap.hasOwnProperty('+')) {
       highest = delimMap['+'];
       delim = '+';
     }
-    
-    if(delimMap.hasOwnProperty(';')) { 
+
+    if(delimMap.hasOwnProperty(';')) {
       if(highest < delimMap[';']) {
         highest = delimMap[';'];
         delim = ';';
-      }   
+      }
     }
-    
-    if(delimMap.hasOwnProperty(',')) { 
+
+    if(delimMap.hasOwnProperty(',')) {
       if(highest < delimMap[',']) {
         highest = delimMap[','];
         delim = ',';
       }
     }
 
-    if(delimMap.hasOwnProperty(' ')) { 
+    if(delimMap.hasOwnProperty(' ')) {
       if(highest < delimMap[' ']) {
         highest = delimMap[' '];
         delim = ' ';
       }
     }
-  
+
     return delim;
   }
-  
+
   // Replace everything but a-z and 0-9 (including spaces)
   function stripChars(strObj) {
     return strObj.replace(/[^a-zA-Z0-9]+/g,'');
   }
-  
+
   /*
   * DOM additions
   */
-  
+
   // Include the CSS
   appAPI.resources.includeCSS('css/filterable.css', {
     key:'intro',
@@ -167,27 +167,27 @@ appAPI.ready(function($) {
     fontSize:'14pt',
     fontWeight:'bold'
   });
-  
+
   // Include the top filter menu
   $(appAPI.resources.get('html/filter_template.html'))
     .prependTo('.rightHeaderContent');
-  
+
   // Insert the correct words into the top filter menu
   for(var keyword in bad_words) {
     if(!bad_words.hasOwnProperty(keyword) || !bad_words[keyword]) { continue; }
     var innerHTML = '<a id="'+ keyword +'" class="filterKeyword" href="#" >'+keyword+' </a>';
     $(innerHTML).appendTo($("#filteredWords .longRowList"));
   }
-  
+
   for(var gKeyword in good_words) {
     if(!good_words.hasOwnProperty(gKeyword) || !good_words[gKeyword]) { continue; }
     var gInnerHTML = '<a id="'+ gKeyword +'" class="unfilterKeyword" href="#" >'+gKeyword+' </a>';
     $(gInnerHTML).appendTo($("#unfilteredWords .longRowList"));
   }
-    
+
     // Update the current content with the above filters
     refreshFilter(false);
-  
+
   /*
   * Bind events
   */
@@ -216,7 +216,7 @@ appAPI.ready(function($) {
       refreshFilter(true);
     }
   });
-  
+
   $("#addFilterSubmit").live("click", function(e) {
     var cVal = $("#addFilterInput").attr('value').toLowerCase();
     if(good_words[cVal]) {
@@ -233,7 +233,7 @@ appAPI.ready(function($) {
       refreshFilter(true);
     }
   });
-  
+
   $("#addUnfilterSubmit").live("click", function(e) {
     var cVal = $("#addUnfilterInput").attr('value').toLowerCase();
     if(bad_words[cVal]) {
@@ -250,7 +250,7 @@ appAPI.ready(function($) {
       refreshFilter(true);
     }
   });
-    
+
   $("#filterest .nav").live("click", function(e) {
     e.preventDefault();
     $("#filterTable").animate({
@@ -258,7 +258,7 @@ appAPI.ready(function($) {
             opacity: "toggle"
         }, 350);
   });
-  
+
   // Take each element as it's added to the DOM (pretty smart eh?)
   $(".Grid").live("DOMNodeInserted", function(e) {
     var imgArray = $(e.target).find('.Pin');
@@ -267,15 +267,15 @@ appAPI.ready(function($) {
       processDescription(imgArray[i], false);
     }
   });
-  
+
   $(".GridItems .Pin").live('mouseover', function(e) {
     $(e.currentTarget).parent().css('z-index','2');
     $(e.currentTarget).find('.filterKeyword').show(350, function() {});
   });
-  
+
   $(".Pin").live('mouseleave', function(e) {
     $(e.currentTarget).find('.filterKeyword').hide(500, function() {
-      $(e.currentTarget).parent().css('z-index','1'); 
+      $(e.currentTarget).parent().css('z-index','1');
     });
   });
 
@@ -290,4 +290,3 @@ appAPI.ready(function($) {
       }
     }, 100);
 });
-
